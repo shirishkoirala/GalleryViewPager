@@ -34,7 +34,7 @@ class ImagePagerAdapter : PagerAdapter() {
         val relativeLayout = RelativeLayout(container.context)
         val imageView = AppCompatImageView(container.context)
         // Modify Views in parent - child order
-        cardView.radius = 100f
+        cardView.radius = container.context.resources.getDimension(R.dimen.card_radius)
         cardView.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.MATCH_PARENT
