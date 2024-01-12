@@ -1,12 +1,13 @@
 package com.twiceyuan.galleryviewpager.infiniteViewPager;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * A {@link ViewPager} that allows pseudo-infinite paging with a wrap-around effect. Should be used with an {@link
@@ -26,10 +27,6 @@ public class InfiniteViewPager extends ViewPager {
         setup();
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
     private void setup() {
         final GestureDetector tapGestureDetector = new GestureDetector(getContext(), new TapGestureListener());
 
@@ -47,12 +44,6 @@ public class InfiniteViewPager extends ViewPager {
         super.setAdapter(adapter);
         // offset first element so that we can scroll to the left
         setCurrentItem(0);
-    }
-
-    @Override
-    public void setCurrentItem(int item) {
-        // offset the current item to ensure there is space to scroll
-        setCurrentItem(item, false);
     }
 
     @Override
@@ -80,16 +71,22 @@ public class InfiniteViewPager extends ViewPager {
         }
     }
 
+    @Override
+    public void setCurrentItem(int item) {
+        // offset the current item to ensure there is space to scroll
+        setCurrentItem(item, false);
+    }
+
     public int getRealCurrentItem() {
         return super.getCurrentItem();
     }
 
-    public void setRealCurrentItem(int item, boolean smoothScroll) {
-        super.setCurrentItem(item, smoothScroll);
-    }
-
     public void setRealCurrentItem(int item) {
         super.setCurrentItem(item);
+    }
+
+    public void setRealCurrentItem(int item, boolean smoothScroll) {
+        super.setCurrentItem(item, smoothScroll);
     }
 
     private int getOffsetAmount() {
@@ -107,15 +104,20 @@ public class InfiniteViewPager extends ViewPager {
             return 0;
         }
     }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
     private class TapGestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            if(mOnItemClickListener != null) {
+            if (mOnItemClickListener != null) {
                 mOnItemClickListener.onItemClick(getCurrentItem());
             }
             return true;

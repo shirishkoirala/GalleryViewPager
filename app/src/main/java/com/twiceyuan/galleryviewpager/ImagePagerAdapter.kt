@@ -1,11 +1,11 @@
 package com.twiceyuan.galleryviewpager
 
-import android.support.v4.view.PagerAdapter
-import android.support.v7.widget.AppCompatImageView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.viewpager.widget.PagerAdapter
 
 /**
  * Created by twiceYuan on 9/13/16.

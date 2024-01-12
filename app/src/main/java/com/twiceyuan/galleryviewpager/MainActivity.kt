@@ -1,18 +1,19 @@
 package com.twiceyuan.galleryviewpager
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.twiceyuan.galleryviewpager.databinding.ActivityMainBinding
 import com.twiceyuan.galleryviewpager.infiniteViewPager.InfinitePagerAdapter
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        viewPager.offscreenPageLimit = 3
-        viewPager.adapter = InfinitePagerAdapter(ImagePagerAdapter())
-        viewPager.setPageTransformer(true, GalleryTransformer)
+        binding.viewPager.offscreenPageLimit = 3
+        binding.viewPager.adapter = InfinitePagerAdapter(ImagePagerAdapter())
+        binding.viewPager.setPageTransformer(true, GalleryTransformer)
     }
 }
