@@ -5,8 +5,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import androidx.appcompat.content.res.AppCompatResources
 import com.twiceyuan.galleryviewpager.databinding.ActivityMainBinding
 import com.twiceyuan.galleryviewpager.infiniteViewPager.InfinitePagerAdapter
 
@@ -22,61 +21,41 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.adapter = InfinitePagerAdapter(ImagePagerAdapter())
         binding.viewPager.setPageTransformer(true, GalleryTransformer)
 
-        binding.backgroundViewPager.adapter = InfinitePagerAdapter(ImagePagerAdapter())
+        binding.backgroundViewPager.adapter = InfinitePagerAdapter(BackgroundImagePagerAdapter())
 
         binding.viewPager.setOnTouchListener(object : OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                binding.backgroundViewPager.onTouchEvent(event)
+                var hackedEvent: MotionEvent? = null
+                event?.let { scopeEvent ->
+                    hackedEvent = MotionEvent.obtain(
+                        scopeEvent.downTime,
+                        scopeEvent.eventTime, scopeEvent.action, scopeEvent.x * 3f,
+                        scopeEvent.y, scopeEvent.metaState
+                    )
+                }
+                hackedEvent?.let {
+                    binding.backgroundViewPager.onTouchEvent(it)
+                }
                 return false
             }
         })
 
         binding.backgroundViewPager.setOnTouchListener(object : OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                binding.viewPager.onTouchEvent(event)
+                var hackedEvent: MotionEvent? = null
+                event?.let { scopeEvent ->
+                    hackedEvent = MotionEvent.obtain(
+                        scopeEvent.downTime,
+                        scopeEvent.eventTime, scopeEvent.action, scopeEvent.x / 3f,
+                        scopeEvent.y, scopeEvent.metaState
+                    )
+                }
+                hackedEvent?.let {
+                    binding.viewPager.onTouchEvent(it)
+                }
+
                 return false
             }
-        })
-
-        binding.viewPager.addOnPageChangeListener(object : OnPageChangeListener {
-            private var mScrollState = ViewPager.SCROLL_STATE_IDLE
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-                    binding.backgroundViewPager.setCurrentItem(position, false)
-                }
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-                mScrollState = state;
-            }
-        })
-
-        binding.backgroundViewPager.addOnPageChangeListener(object : OnPageChangeListener {
-            private var mScrollState = ViewPager.SCROLL_STATE_IDLE
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-                    binding.viewPager.setCurrentItem(position, false)
-                }
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {
-                mScrollState = state;
-            }
-
         })
     }
 }
