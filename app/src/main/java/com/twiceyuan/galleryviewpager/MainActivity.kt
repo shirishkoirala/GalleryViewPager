@@ -5,7 +5,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import com.twiceyuan.galleryviewpager.databinding.ActivityMainBinding
 import com.twiceyuan.galleryviewpager.infiniteViewPager.InfinitePagerAdapter
 
@@ -53,8 +52,12 @@ class MainActivity : AppCompatActivity() {
                 hackedEvent?.let {
                     binding.viewPager.onTouchEvent(it)
                 }
-
                 return false
+            }
+        })
+        binding.gradientView.setOnTouchListener(object : OnTouchListener {
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                return true
             }
         })
     }
